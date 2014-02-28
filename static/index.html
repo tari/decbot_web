@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="decbot">
+<head>
+    <script type="text/javascript" src="lib/jquery-2.1.0.js"></script>
+    <script type="text/javascript" src="lib/angular.js"></script>
+    <script type="text/javascript" src="lib/angular-resource.js"></script>
+    <script type="text/javascript" src="lib/ng-infinite-scroll.js"></script>
+    <script type="text/javascript" src="app/decbot.js"></script>
+    <!-- bootstrap css only -->
+</head>
+
+<body><!--ng-controller="DecbotCtrl"-->
+
+<!-- header here or something -->
+<!-- use this when using routing <div ng-view class="container-fluid"></div> -->
+<h1>DecBot quotes</h1>
+<div ng-controller="QuotesCtrl">
+    <div class="quote"
+        ng-repeat="quote in quotes"
+        infinite-scroll="moreQuotes()"
+        >
+        {{quote.timestamp}} &lt; {{quote.added_by}} &gt; {{quote.quote}}
+    </div>
+    <div ng-hide="more_pages">
+        <p>No more quotes to see. Maybe you should go take a walk.</p>
+    </div>
+</div>
+
+</body>
+</html>
