@@ -53,6 +53,7 @@ ROOT_URLCONF = 'decbot_web.urls'
 
 WSGI_APPLICATION = 'decbot_web.wsgi.application'
 
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

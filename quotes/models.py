@@ -19,6 +19,14 @@ class Quote(models.Model):
     class Meta:
         db_table = 'quotes'
 
+    @property
+    def lines(self):
+        return self.quote.split('|')
+
+    @classmethod
+    def all_active(cls):
+        return cls.objects.filter(active=True)
+
 #class Vote(models.Model):
 #    id = models.IntegerField(primary_key=True)
 #    # TODO prefer composite primary key of quote ID and SID
