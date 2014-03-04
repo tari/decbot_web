@@ -20,7 +20,7 @@ except ImportError:
     now = lambda: datetime.now(utc)
 
 class Quote(models.Model):
-    id = models.IntegerField(db_column='Id', primary_key=True)
+    id = models.AutoField(db_column='Id', primary_key=True)
     timestamp = models.DateTimeField(db_column='Timestamp', default=now)
     added_by = models.CharField(db_column='AddedBy', max_length=45)
     deleted_by = models.CharField(db_column='DeletedBy', max_length=45,
