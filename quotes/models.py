@@ -32,10 +32,26 @@ class Quote(models.Model):
 
     class Meta:
         db_table = 'quotes'
+        ordering = ['-timestamp']
 
     @property
     def lines(self):
-        return self.quote.split('|')
+        start = 0
+        i = 0
+        q = self.quote
+        while i >= 0:
+            i = q.find('|', i)
+            if i > 0:
+                if q[i - 1] != '\\':
+                    yield q[start:i].replace('\\|', '|').strip()
+                    start = i = i + 1
+                else:
+                    i += 1
+        yield q[start:]
+
+    @lines.setter
+    def lines(self, value):
+        self.quote = '|'.join(value)
 
     @classmethod
     def all_active(cls):
