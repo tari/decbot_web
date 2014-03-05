@@ -43,11 +43,11 @@ class Quote(models.Model):
             i = q.find('|', i)
             if i > 0:
                 if q[i - 1] != '\\':
-                    yield q[start:i].replace('\\|', '|').strip()
+                    yield q[start:i].strip().replace('\\|', '|')
                     start = i = i + 1
                 else:
                     i += 1
-        yield q[start:]
+        yield q[start:].strip().replace('\\|', '|')
 
     @lines.setter
     def lines(self, value):
