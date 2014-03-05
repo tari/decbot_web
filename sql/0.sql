@@ -12,7 +12,8 @@ CREATE TABLE scores (
 );
 
 CREATE TABLE quotes (
-    Id INTEGER NOT NULL PRIMARY KEY,
+    -- Use engine's equivalent as necessary
+    Id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
     Timestamp DATETIME NOT NULL,
     AddedBy VARCHAR(45) NOT NULL,
     Quote TEXT NOT NULL,
