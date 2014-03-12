@@ -2,19 +2,20 @@
 <html lang="en" ng-app="decbot">
 <head>
     <meta charset="utf-8">
-    <!-- bootstrap css only -->
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/ns.css">
 </head>
 
 <body>
 <h1>DecBot quotes</h1>
 
-<div>{% for quote in quotes %}
-    <div class="quote">
-        <pre>{% for line in quote.lines %}{{line}}
-{% endfor %}</pre>
-        Added by {{quote.added_by}} at {{quote.timestamp}}.
-    </div>
-{% endfor %}</div>
+<ul class="nomarker" id="quotes">{% for quote in quotes %}
+    <li class="quote">
+        <pre>{{quote.lines|join:"&#10;"}}</pre>
+        <span class="qid">#{{quote.id}}</span>
+        Added by {{quote.added_by}} at {{quote.timestamp|date:"c"}}.
+    </li>
+{% endfor %}</ul>
 
 <div class="pagination">
     <p>

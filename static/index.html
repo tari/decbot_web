@@ -7,7 +7,9 @@
     <script type="text/javascript" src="/static/lib/angular-resource.js"></script>
     <script type="text/javascript" src="/static/lib/ng-infinite-scroll.js"></script>
     <script type="text/javascript" src="/static/app/decbot.js"></script>
-    <!-- bootstrap css only -->
+
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/angular.css">
 
     <!-- redirect to script-free site -->
     <noscript>
@@ -20,16 +22,18 @@
 <!-- header here or something -->
 <!-- use this when using routing <div ng-view class="container-fluid"></div> -->
 <h1>DecBot quotes</h1>
-<div ng-controller="QuotesCtrl">
-    <div class="quote"
-        ng-repeat="quote in quotes"
-        infinite-scroll="moreQuotes()"
-        >
-        <pre><span ng-repeat="line in quote.lines">{{line}}
-</span></pre>
-        </p>
-        Added by {{quote.added_by}} at {{quote.timestamp}}.
-    </div>
+<div>
+    <ul class="nomarker" id="quotes" ng-controller="QuotesCtrl">
+        <li class="quote" ng-class-even="'even'"
+            ng-repeat="quote in quotes"
+            infinite-scroll="moreQuotes()"
+            >
+            <pre>{{quote.lines.join("\n")}}</pre>
+            </p>
+            <span class="qid">#{{quote.id}}</span>
+            Added by {{quote.added_by}} at {{quote.timestamp}}.
+        </li>
+    </ul>
     <div ng-hide="more_pages">
         <p>No more quotes to see. Maybe you should go take a walk.</p>
     </div>

@@ -1,0 +1,14 @@
+
+.nomarker {
+    list-style-type: none;
+}
+
+ul#quotes {
+    padding: 0;
+}
+
+.quote {
+    padding: .5em;
+    border-radius: .5em;
+}
+

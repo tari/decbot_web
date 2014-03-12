@@ -1,0 +1,4 @@
+
+li.quote:nth-child(even) {
+    background-color: #ccf;
+}
