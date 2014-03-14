@@ -47,6 +47,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Deployment on web servers that support cookie-based URL rewriting allows
+    # this to be disabled, potentially performing better.
+    'decbot_web.middleware.AJAXCookieMiddleware'
 )
 
 ROOT_URLCONF = 'decbot_web.urls'

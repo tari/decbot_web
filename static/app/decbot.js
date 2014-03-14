@@ -4,6 +4,29 @@ angular.module('decbot', [
     'infinite-scroll'
 ]);
 
+angular.module('decbot').config([
+    '$locationProvider',
+    function($lp) {
+        $lp.html5Mode(true).hashPrefix('!');
+    }
+]).run([
+    '$location',
+    function($location) {
+        // If there was a server redirect back to the single-page app, it gave
+        // us the actual requested URL. Make the URL bar reflect that.
+        var search = $location.search();
+        if ('redirect_src' in search) {
+            var target = decodeURIComponent(search['redirect_src']);
+            $location.path(target);
+
+            delete search['redirect_src'];
+            $location.search(search);
+
+            $location.replace();
+        }
+    }
+]);
+
 angular.module('decbot').factory('Quotes', [
     '$resource',
     function($resource) {
