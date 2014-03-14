@@ -12,8 +12,8 @@ angular.module('decbot').config([
 ]).run([
     '$location',
     function($location) {
-        // If there was a server redirect back to the single-page app, it gave
-        // us the actual requested URL. Make the URL bar reflect that.
+        // If there was a redirect to the single-page app, it gave
+        // us the actual requested URL. Set out path to that.
         var search = $location.search();
         if ('redirect_src' in search) {
             var target = decodeURIComponent(search['redirect_src']);

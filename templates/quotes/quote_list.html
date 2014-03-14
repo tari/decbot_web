@@ -6,15 +6,12 @@
     <link rel="stylesheet" href="/static/css/ns.css">
 
     <script type="text/javascript">
-    // Bootstrap modality of script-free vs Web 2.0 (TM) site.
     // If this executes, we assume the client can handle whatever AJAX-y insanity
-    // we care to throw its way. Set a cookie indicating to the server that
-    // it's free to transparently redirect to the AJAX version of the site and
-    // force a reload.
-    // TODO if interface=noscript, be concerned; this is a potential sign of
-    // redirect loop. May wish to ask the user to proceed.
-    document.cookie = "interface=ajax";
-    window.location.reload(true);
+    // we care to throw its way. Instruct the browser to reload the SPA.
+    // TODO check a cookie to allow users to force the script-free site when
+    // scripts are enabled.
+    var target = encodeURIComponent(window.location.pathname);
+    window.location.replace('/static/index.html?redirect_src=' + target);
     </script>
 
     <title>DecBot</title>
