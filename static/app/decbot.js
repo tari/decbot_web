@@ -1,10 +1,11 @@
-angular.module('decbot', [
+var decbot = angular.module('decbot', [
     // Module dependencies
     'ngResource',
+    'ngRoute',
     'infinite-scroll'
 ]);
 
-angular.module('decbot').config([
+decbot.config([
     '$locationProvider',
     function($lp) {
         $lp.html5Mode(true).hashPrefix('!');
@@ -27,7 +28,25 @@ angular.module('decbot').config([
     }
 ]);
 
-angular.module('decbot').factory('Quotes', [
+decbot.config([
+    '$routeProvider',
+    function($routeProvider) {
+        $routeProvider.
+            when('/quotes/', {
+                templateUrl: '/static/partials/quote-list.html',
+                controller: 'QuoteListCtrl'
+            }).
+            when('/quotes/:quoteId', {
+                templateUrl: '/static/partials/quote-single.html',
+                controller: 'QuoteDetailCtrl'
+            }).
+            otherwise({
+                redirectTo: '/quotes/'
+            });
+    }
+]);
+
+decbot.factory('Quotes', [
     '$resource',
     function($resource) {
         var Quotes = $resource('/api/quotes/:id')
@@ -35,7 +54,7 @@ angular.module('decbot').factory('Quotes', [
     }
 ]);
 
-angular.module('decbot').controller('QuotesCtrl', [
+decbot.controller('QuoteListCtrl', [
     // Controller dependencies
     '$scope',
     'Quotes',
@@ -61,5 +80,17 @@ angular.module('decbot').controller('QuotesCtrl', [
             });
         };
         $scope.moreQuotes();
+    }
+]);
+
+decbot.controller('QuoteDetailCtrl', [
+    '$scope',
+    '$routeParams',
+    'Quotes',
+
+    function($scope, $routeParams, Quotes) {
+        var qid = $routeParams.quoteId;
+
+        $scope.quote = Quotes.get({id: qid});
     }
 ]);

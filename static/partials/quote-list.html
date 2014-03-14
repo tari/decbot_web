@@ -1,0 +1,10 @@
+<ul class="nomarker" id="quotes">
+    <li class="quote" ng-class-even="'even'"
+        ng-repeat="quote in quotes"
+        infinite-scroll="moreQuotes()"
+        ng-include="'/static/partials/quote-single.html'">
+    </li>
+</ul>
+<div ng-hide="more_pages">
+    <p>No more quotes to see. Maybe you should go take a walk.</p>
+</div>

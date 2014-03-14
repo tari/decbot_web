@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="decbot">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/ns.css">
+
+    <script type="text/javascript">
+    // If this executes, we assume the client can handle whatever AJAX-y
+    // insanity we care to throw its way. Instruct the browser to reload the
+    // SPA.
+    // TODO check a cookie to allow users to force the script-free site when
+    // scripts are enabled.
+    var target = encodeURIComponent(window.location.pathname);
+    window.location.replace('/static/index.html?redirect_src=' + target);
+    </script>
+
+    <title>DecBot {% block title %}{% endblock %}</title>
+</head>
+
+<body>
+<h1>DecBot</h1>
+{% block content %}
+This shouldn't be visible. Somebody (maybe you?) screwed up writing a template.
+{% endblock %}
+</body>
+</html>

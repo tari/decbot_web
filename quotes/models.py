@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from django.core.urlresolvers import reverse
 from django.db import models
 from datetime import datetime
 
@@ -33,6 +34,9 @@ class Quote(models.Model):
     class Meta:
         db_table = 'quotes'
         ordering = ['-timestamp']
+
+    def get_absolute_url(self):
+        return reverse('quote_view', kwargs={'pk': self.id})
 
     @property
     def lines(self):

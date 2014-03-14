@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Quote #{{quote.id}}{% endblock %}
+
+{% block content %}
+
+<h2>Quote #{{quote.id}}</h2>
+{% include "quotes/quote.html" %}
+
+{% endblock %}
