@@ -2,9 +2,11 @@ from django.conf.urls import patterns, include, url
 from rest_framework import routers
 
 from quotes.api import QuoteViewSet
+from karma.api import ScoreViewSet
 
 router = routers.DefaultRouter()
 router.register('quotes', QuoteViewSet)
+router.register('scores', ScoreViewSet)
 api = patterns('api',
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls',
@@ -12,10 +14,12 @@ api = patterns('api',
 )
 
 from quotes.urls import quotes
+from karma.urls import karma
 from quotes.views import QuoteList
 
 urlpatterns = patterns('',
     url(r'^$', QuoteList.as_view()),
     url(r'^api/', include(api)),
     url(r'^quotes/', include(quotes)),
+    url(r'^scores/', include(karma)),
 )

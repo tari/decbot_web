@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Scores{% endblock %}
+
+{% block content %}
+<img src="{% url 'karma.views.score_graph' %}" alt="Scores log10" />
+<table>
+    <tr>
+        <th>Place</th>
+        <th>Name</th>
+        <th>Score</th>
+    </tr>
+    {% for thing in things %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{thing.name}}</td>
+        <td>{{thing.score}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

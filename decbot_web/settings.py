@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'rest_framework',
 
     'quotes',
+    'karma'
 )
 
 MIDDLEWARE_CLASSES = (

@@ -1,3 +1,5 @@
+"use strict";
+
 var decbot = angular.module('decbot', [
     // Module dependencies
     'ngResource',
@@ -40,6 +42,10 @@ decbot.config([
                 templateUrl: '/static/partials/quote-single.html',
                 controller: 'QuoteDetailCtrl'
             }).
+            when('/scores/', {
+                templateUrl: '/static/partials/score-summary.html',
+                controller: 'ScoreSummaryCtrl'
+            }).
             otherwise({
                 redirectTo: '/quotes/'
             });
@@ -61,15 +67,18 @@ decbot.controller('QuoteListCtrl', [
     
     function($scope, Quotes) {
         $scope.quotes = [];
+        $scope.more_loading = false;
 
         var last_page = 1;
         var more_pages = true;
 
         $scope.moreQuotes = function() {
             if (!more_pages) return;
+            $scope.more_loading = true;
 
             var request = Quotes.get({'page': last_page}, function() {
                 last_page++;
+                $scope.more_loading = false;
 
                 var results = request['results'];
                 for (var i = 0; i < request.count; i++) {
@@ -79,7 +88,6 @@ decbot.controller('QuoteListCtrl', [
                 more_pages = request.next != null;
             });
         };
-        $scope.moreQuotes();
     }
 ]);
 
@@ -92,5 +100,41 @@ decbot.controller('QuoteDetailCtrl', [
         var qid = $routeParams.quoteId;
 
         $scope.quote = Quotes.get({id: qid});
+    }
+]);
+
+decbot.factory('Scores', [
+    '$resource',
+    function($resource) {
+        return $resource('/api/scores/:name');
+    }
+]);
+
+decbot.controller('ScoreSummaryCtrl', [
+    '$scope',
+    'Scores',
+    function($scope, Scores) {
+        $scope.scores = [];
+        $scope.more_loading = false;
+
+        var last_page = 1;
+        var more_pages = true;
+
+        $scope.moreScores = function() {
+            if (!more_pages) return;
+            $scope.more_loading = true;
+
+            var request = Scores.get({'page': last_page}, function() {
+                $scope.more_loading = false;
+                last_page++;
+
+                var results = request['results'];
+                for (var i = 0; i < request.count; i++) {
+                    $scope.scores.push(results[i]);
+                }
+
+                more_pages = request.next != null;
+            });
+        };
     }
 ]);

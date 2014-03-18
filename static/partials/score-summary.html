@@ -1,0 +1,18 @@
+
+<img src="/scores/scores.png" alt="Scores graph" />
+<table infinite-scroll="moreScores()">
+    <tr>
+        <th>Place</th>
+        <th>Name</th>
+        <th>Score</th>
+    </tr>
+    <tr ng-repeat="score in scores">
+        <td>{{ $index + 1 }}</td>
+        <td>{{ score.name }}</td>
+        <td>{{ score.score }}</td>
+    </tr>
+</table>
+
+<div class="throbber" ng-show="more_loading">
+    Loading more scores..
+</div>
