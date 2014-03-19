@@ -6,9 +6,12 @@ class ScoreSummary(ListView):
     model = Score
     context_object_name = 'things'
 
+import matplotlib
+# Force Agg backend
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg
 from numpy import arange
-from tempfile import SpooledTemporaryFile
 
 def score_graph(request):
     scores = list(Score.objects.all()[:50])
@@ -29,7 +32,8 @@ def score_graph(request):
     ax.set_title('Top 50 ($log_{10}$)')
 
     response = HttpResponse(content_type='image/png')
-    fig.savefig(response, format='png', bbox_inches='tight')
+    canvas = FigureCanvasAgg(fig)
+    canvas.print_png(response)
     # matplotlib requires that we explicitly close all figures
     plt.close(fig)
     return response
