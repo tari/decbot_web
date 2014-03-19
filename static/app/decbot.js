@@ -81,7 +81,7 @@ decbot.controller('QuoteListCtrl', [
                 $scope.more_loading = false;
 
                 var results = request['results'];
-                for (var i = 0; i < request.count; i++) {
+                for (var i = 0; i < results.length; i++) {
                     $scope.quotes.push(results[i]);
                 }
 
@@ -129,7 +129,7 @@ decbot.controller('ScoreSummaryCtrl', [
                 last_page++;
 
                 var results = request['results'];
-                for (var i = 0; i < request.count; i++) {
+                for (var i = 0; i < results.length; i++) {
                     $scope.scores.push(results[i]);
                 }
 

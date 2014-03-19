@@ -6,7 +6,7 @@
         <th>Name</th>
         <th>Score</th>
     </tr>
-    <tr ng-repeat="score in scores">
+    <tr ng-repeat="score in scores track by $index">
         <td>{{ $index + 1 }}</td>
         <td>{{ score.name }}</td>
         <td>{{ score.score }}</td>
