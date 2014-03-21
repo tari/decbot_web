@@ -4,7 +4,8 @@ var decbot = angular.module('decbot', [
     // Module dependencies
     'ngResource',
     'ngRoute',
-    'infinite-scroll'
+    'infinite-scroll',
+    'highcharts-ng'
 ]);
 
 decbot.config([
@@ -49,6 +50,41 @@ decbot.config([
             otherwise({
                 redirectTo: '/quotes/'
             });
+    }
+]);
+
+// Simple nav menu, derived from Ryan Kaskel's example:
+// https://ryankaskel.com/blog/2013/05/27/a-different-approach-to-angularjs-navigation-menus
+decbot.directive('navMenu', [
+    '$location',
+    '$log',
+    function($location, $log) {
+        return function(scope, element, attrs) {
+            var links = element.find('a');
+            var urlMap = {};
+            var currentLocation;
+            var activeClass = attrs.navMenu || 'nav-active';
+
+            for (var i = 0; i < links.length; i++) {
+                var link = angular.element(links[i]);
+                urlMap[link.attr('href')] = link;
+            }
+
+            scope.$on('$routeChangeSuccess', function() {
+                var target = urlMap[$location.path()];
+
+                if (target) {
+                    if (currentLocation) {
+                        currentLocation.removeClass(activeClass);
+                    }
+                    currentLocation = target;
+                    currentLocation.addClass(activeClass);
+                } else {
+                    $log.warn("Nav doesn't recognize path: " +
+                              $location.path());
+                }
+            });
+        };
     }
 ]);
 
@@ -115,6 +151,8 @@ decbot.controller('ScoreSummaryCtrl', [
     'Scores',
     function($scope, Scores) {
         $scope.scores = [];
+        $scope.uScores = [];
+        $scope.uNames = [];
         $scope.more_loading = false;
 
         var last_page = 1;
@@ -123,6 +161,7 @@ decbot.controller('ScoreSummaryCtrl', [
         $scope.moreScores = function() {
             if (!more_pages) return;
             $scope.more_loading = true;
+            $scope.chartConfig.loading = false;
 
             var request = Scores.get({'page': last_page}, function() {
                 $scope.more_loading = false;
@@ -131,10 +170,70 @@ decbot.controller('ScoreSummaryCtrl', [
                 var results = request['results'];
                 for (var i = 0; i < results.length; i++) {
                     $scope.scores.push(results[i]);
+
+                    var s = results[i].score;
+                    // Emulate matplotlib's `symlog` scale by making the scale
+                    // linear for all scores less than 1. 0 => 1e-1, 1 => 1e-2
+                    // and so forth.
+                    if (s <= 0) {
+                        s = Math.pow(10, s - 1);
+                    }
+                    $scope.uScores.push(s);
+                    $scope.uNames.push(results[i].name);
                 }
 
                 more_pages = request.next != null;
             });
+        };
+
+        $scope.chartConfig = {
+            options: {
+                chart: {
+                    type: 'area',
+                    zoomType: 'xy'
+                },
+                credits: { enabled: false },
+                tooltip: {
+                    formatter: function() {
+                        var s = this.y;
+                        if (s < 1) {
+                            s = Math.round(Math.log(s) / Math.LN10) + 1;
+                        }
+                        return this.x + '<br />' + s;
+                    }
+                },
+                legend: { enabled: false },
+                yAxis: {
+                    type: 'logarithmic',
+                    minorTickInterval: 0.1,
+                    labels: {
+                        formatter: function() {
+                            if (this.value < 1) {
+                                return Math.round(Math.log(this.value) / Math.LN10) + 1;
+                            } else {
+                                return this.value;
+                            }
+                        }
+                    },
+                    title: { text: null },
+                },
+            },
+            series: [{name: 'Score', data: $scope.uScores}],
+            title: {
+                text: 'Top 50 (log<sub>10</sub>)',
+                useHTML: true,
+            },
+            xAxis: {
+                categories: $scope.uNames,
+                startOnTick: true,
+                labels: {
+                    rotation: -75,
+                    overflow: false,
+                },
+                currentMin: 0,
+                currentMax: 49
+            },
+            loading: true,
         };
     }
 ]);

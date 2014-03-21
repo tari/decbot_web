@@ -9,6 +9,33 @@ th, td {
     border-spacing: 0;
 }
 
+#header > h1 {
+    display: inline-block;
+}
+#header a {
+    color: black;
+    text-decoration: none;
+}
+#header a:hover {
+    text-decoration: underline;
+}
+ul.flatten > li:nth-child(n+2):before {
+    content: "|";
+    margin: .25em;
+}
+ul.flatten {
+    display: inline;
+    padding: .25em;
+    margin-left: 1em;
+}
+ul.flatten > li {
+    display: inline;
+}
+
+#nav .nav-active {
+    font-weight: bold;
+}
+
 .nomarker {
     list-style-type: none;
 }
@@ -20,5 +47,15 @@ ul#quotes {
 .quote {
     padding: .5em;
     border-radius: .5em;
+}
+
+#score-table {
+    max-width: 40%;
+}
+#score-graph {
+    float: right;
+    position: fixed;
+    bottom: 0;
+    right: 0;
 }
 

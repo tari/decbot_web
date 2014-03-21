@@ -1,6 +1,10 @@
 
-<img src="/scores/scores.png" alt="Scores graph" />
-<table infinite-scroll="moreScores()">
+<div id="score-graph">
+    <highchart config="chartConfig"></highchart>
+</div>
+
+<table infinite-scroll="moreScores()" infinite-scroll-disabled="more_loading"
+       id="score-table">
     <tr>
         <th>Place</th>
         <th>Name</th>

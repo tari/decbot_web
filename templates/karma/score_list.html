@@ -3,8 +3,9 @@
 {% block title %}Scores{% endblock %}
 
 {% block content %}
-<img src="{% url 'karma.views.score_graph' %}" alt="Scores log10" />
-<table>
+<img src="{% url 'karma.views.score_graph' %}" alt="Scores log10"
+     id="score-graph"/>
+<table id="score-table">
     <tr>
         <th>Place</th>
         <th>Name</th>
