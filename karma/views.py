@@ -6,6 +6,18 @@ class ScoreSummary(ListView):
     model = Score
     context_object_name = 'things'
 
+    def get_context_data(self, **kwargs):
+        context = super(ScoreSummary, self).get_context_data(**kwargs)
+        last_score = float('inf')
+        rank = 0
+        for thing in context['things']:
+            if thing.score < last_score:
+                rank += 1
+            last_score = thing.score
+            thing.rank = rank
+
+        return context
+
 import matplotlib
 # Force Agg backend
 matplotlib.use('Agg')

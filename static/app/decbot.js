@@ -168,10 +168,18 @@ decbot.controller('ScoreSummaryCtrl', [
                 last_page++;
 
                 var results = request['results'];
+                var last_score = Infinity;
+                var rank = 0;
                 for (var i = 0; i < results.length; i++) {
-                    $scope.scores.push(results[i]);
+                    var result = results[i];
+                    if (result.score < last_score) {
+                        rank += 1;
+                    }
+                    last_score = result.score;
+                    result.rank = rank;
+                    $scope.scores.push(result);
 
-                    var s = results[i].score;
+                    var s = result.score;
                     // Emulate matplotlib's `symlog` scale by making the scale
                     // linear for all scores less than 1. 0 => 1e-1, 1 => 1e-2
                     // and so forth.
@@ -179,7 +187,7 @@ decbot.controller('ScoreSummaryCtrl', [
                         s = Math.pow(10, s - 1);
                     }
                     $scope.uScores.push(s);
-                    $scope.uNames.push(results[i].name);
+                    $scope.uNames.push(result.name);
                 }
 
                 more_pages = request.next != null;
