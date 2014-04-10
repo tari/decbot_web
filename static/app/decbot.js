@@ -157,6 +157,9 @@ decbot.controller('ScoreSummaryCtrl', [
 
         var last_page = 1;
         var more_pages = true;
+        // Items with equal score should have same rank
+        var last_score = Infinity;
+        var rank = 0;
 
         $scope.moreScores = function() {
             if (!more_pages) return;
@@ -168,8 +171,6 @@ decbot.controller('ScoreSummaryCtrl', [
                 last_page++;
 
                 var results = request['results'];
-                var last_score = Infinity;
-                var rank = 0;
                 for (var i = 0; i < results.length; i++) {
                     var result = results[i];
                     if (result.score < last_score) {
