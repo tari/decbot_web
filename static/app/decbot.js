@@ -149,7 +149,16 @@ decbot.factory('Scores', [
 decbot.controller('ScoreSummaryCtrl', [
     '$scope',
     'Scores',
-    function($scope, Scores) {
+    '$http',
+    function($scope, Scores, $http) {
+        $scope.aggregate_score = "unknown";
+        $scope.aggregate_names = "unknown";
+
+        $http.get('/api/totals/score').success(function (data) {
+            $scope.aggregate_score = data['total'];
+            $scope.aggregate_names = data['names'];
+        });
+
         $scope.scores = [];
         $scope.uScores = [];
         $scope.uNames = [];

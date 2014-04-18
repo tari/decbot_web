@@ -5,6 +5,10 @@
 {% block content %}
 <img src="{% url 'karma.views.score_graph' %}" alt="Scores log10"
      id="score-graph"/>
+<p>
+    There are {{things|length}} names in the database, totalling {{total_score}}
+    points.
+</p>
 <table id="score-table">
     <tr>
         <th>Place</th>

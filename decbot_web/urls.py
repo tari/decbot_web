@@ -2,11 +2,12 @@ from django.conf.urls import patterns, include, url
 from rest_framework import routers
 
 from quotes.api import QuoteViewSet
-from karma.api import ScoreViewSet
+from karma.api import ScoreViewSet, TotalsViewSet
 
 router = routers.DefaultRouter()
 router.register('quotes', QuoteViewSet)
 router.register('scores', ScoreViewSet)
+router.register('totals', TotalsViewSet, base_name='totals')
 api = patterns('api',
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls',

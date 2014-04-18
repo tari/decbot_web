@@ -19,7 +19,13 @@
 </head>
 
 <body>
-<h1>DecBot</h1>
+<div id="header">
+    <h1>DecBot</h1>
+    <ul id="nav" class="flatten">
+        <li><a href="/quotes/">Quotes</a></li>
+        <li><a href="/scores/">Karma</a></li>
+    </ul>
+</div>
 {% block content %}
 This shouldn't be visible. Somebody (maybe you?) screwed up writing a template.
 {% endblock %}

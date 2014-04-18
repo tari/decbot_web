@@ -3,6 +3,11 @@
     <highchart config="chartConfig"></highchart>
 </div>
 
+<p>
+    There are {{ aggregate_names }} names in the database, totalling
+    {{ aggregate_score }} points.
+</p>
+
 <table infinite-scroll="moreScores()" infinite-scroll-disabled="more_loading"
        id="score-table">
     <tr>

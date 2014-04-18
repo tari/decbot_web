@@ -8,6 +8,7 @@ class ScoreSummary(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ScoreSummary, self).get_context_data(**kwargs)
+        total = 0
         last_score = float('inf')
         rank = 0
         for thing in context['things']:
@@ -15,7 +16,9 @@ class ScoreSummary(ListView):
                 rank += 1
             last_score = thing.score
             thing.rank = rank
+            total += thing.score
 
+        context['total_score'] = total
         return context
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg
