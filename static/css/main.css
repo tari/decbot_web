@@ -50,13 +50,12 @@ ul#quotes {
 }
 
 #score-table {
-    max-width: 40%;
+    width: 100%;
 }
 #score-graph {
-    float: right;
-    position: fixed;
-    bottom: 0;
-    right: 0;
+    width: 100%;
     background-color: white;
+    overflow: auto;
+    resize: vertical;
 }
 
