@@ -34,7 +34,6 @@ INSERT INTO schema (
     Comment
 ) VALUES (
     0,
-    -- Use engine's equivalent as necessary, such as DATETIME() in sqlite.
-    NOW(),
+    CURRENT_TIMESTAMP
     'Initial install'
 );
