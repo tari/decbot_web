@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.http import HttpResponse
 from karma.models import Score
 
@@ -20,6 +20,9 @@ class ScoreSummary(ListView):
 
         context['total_score'] = total
         return context
+
+class ScoreDetail(DetailView):
+    model = Score
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.figure import Figure

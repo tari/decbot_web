@@ -47,6 +47,10 @@ decbot.config([
                 templateUrl: '/static/partials/score-summary.html',
                 controller: 'ScoreSummaryCtrl'
             }).
+            when('/scores/:name', {
+                templateUrl: '/static/partials/score-single.html',
+                controller: 'ScoreDetailCtrl'
+            }).
             otherwise({
                 redirectTo: '/quotes/'
             });
@@ -143,6 +147,18 @@ decbot.factory('Scores', [
     '$resource',
     function($resource) {
         return $resource('/api/scores/:name');
+    }
+]);
+
+decbot.controller('ScoreDetailCtrl', [
+    '$scope',
+    '$routeParams',
+    'Scores',
+
+    function($scope, $routeParams, Scores) {
+        var name = $routeParams.name;
+
+        $scope.object = Scores.get({name: name});
     }
 ]);
 

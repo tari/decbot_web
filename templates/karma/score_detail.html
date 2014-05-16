@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}Score for {{ object.name }}{% endblock %}
+
+{% block content %}
+<p><strong>{{ object.name }}</strong>'s score is {{ object.score }}.</p>
+
+<p><a href="{% url 'score-summary' %}%}..">Return to the score list.</a></p>
+{% endblock %}

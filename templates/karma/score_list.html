@@ -18,7 +18,7 @@
     {% for thing in things %}
     <tr>
         <td>{{thing.rank}}</td>
-        <td>{{thing.name}}</td>
+        <td><a href="{% url 'score-detail' pk=thing.name %}">{{thing.name}}</a></td>
         <td>{{thing.score}}</td>
     </tr>
     {% endfor %}
