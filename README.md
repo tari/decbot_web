@@ -1,7 +1,7 @@
 # Dependencies
 All dependencies except Python itself may be installed from pypi.
 
- * Python >= 3.0
+ * Python >= 2.7 (>= 3.0 is OK)
  * django >= 1.6
  * djangorestframework
 
@@ -9,12 +9,18 @@ All dependencies except Python itself may be installed from pypi.
 
 # Configuration
 Be sure to edit `decbot_web/settings.py` with your database configuration as
-necessary, and change the secret key. Run `manage.py syncdb` to create database
-tables.
+necessary, and change the secret key.
+
+Database setup scripts are provided in the `sql` directory. Execute them on
+your database in numerical order and everything *should* be okay. You may need
+to modify the scripts slightly depending on what database engine you use.
 
 # Upgrading
-If the db schema changed, good luck. Try `manage.py sqlall` to see what the app
-expects things to look like.
+
+If there's a new database schema revision, the requisite update script will be
+provided in the `sql` directory. Run the new SQL script(s) on your database
+and everything should be taken care of. Backups are recommended before
+attempting any upgrade, though.
 
 # Deployment
 Refer to the [Django documentation](https://docs.djangoproject.com/en/1.6/howto/deployment/)
