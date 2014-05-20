@@ -1,4 +1,25 @@
-<p><strong>{{ object.name }}</strong>'s score is {{ object.score }}.</p>
+<p>
+    <strong>{{ object.name }}</strong>'s current score is {{ object.score }},
+    last changed {{ last_changed|date:'medium' }}.
+</p>
+
+<div id="score-graph">
+    <highchart config="chartConfig"></highchart>
+</div>
+
+<table infinite-scroll="more()" infinite-scroll-disabled="more_loading"
+       id="score-table">
+    <tr>
+        <th>When</th>
+        <th>Change</th>
+        <th>Result</th>
+    </tr>
+    <tr ng-repeat="change in changes">
+        <td>{{change.timestamp|date:'medium'}}</td>
+        <td>{{change.change}}</td>
+        <td>{{change.aggregate}}</td>
+    </tr>
+</table>
 
 <!-- TODO there's probably a way to do URLs by name like the scriptless version of this page does. -->
 <p><a ng-href="/scores/">Return to the score list.</a></p>

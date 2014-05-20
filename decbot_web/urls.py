@@ -16,7 +16,7 @@ api = patterns('api',
 )
 
 from quotes.urls import quotes
-from karma.urls import karma
+from karma.urls import karma, karma_log
 from karma.views import ScoreSummary
 
 urlpatterns = patterns('',
@@ -24,4 +24,5 @@ urlpatterns = patterns('',
     url(r'^api/', include(api)),
     url(r'^quotes/', include(quotes)),
     url(r'^scores/', include(karma)),
+    url(r'^scores-log/', include(karma_log)),
 )

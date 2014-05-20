@@ -37,3 +37,6 @@ class ScoreLog(models.Model):
     class Meta:
         db_table = 'scores_log'
         ordering = ['-timestamp']
+
+    def __unicode__(self):
+        return "<{}+{} @{}>".format(self.name, self.change, self.timestamp)

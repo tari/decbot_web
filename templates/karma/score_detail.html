@@ -3,7 +3,31 @@
 {% block title %}Score for {{ object.name }}{% endblock %}
 
 {% block content %}
-<p><strong>{{ object.name }}</strong>'s score is {{ object.score }}.</p>
+<p>
+    <strong>{{ object.name }}</strong>'s current score is {{ object.score }},
+    last changed
+    {% if last_updated %}
+        approximately {{last_updated|timesince}} ago.
+    {% else %}
+        at an indeterminate time.
+    {% endif %}
+</p>
+
+<img src="{% url 'karma.views.score_log_graph' pk=object.name %}" alt="Score history"
+     id="score-graph"/>
+
+<table id="score-table">
+    <tr>
+        <th>When</th>
+        <th>Change</th>
+    </tr>
+    {% for change in log %}
+    <tr>
+        <td>{{change.timestamp}}</td>
+        <td>{{change.change}}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 <p><a href="{% url 'score-summary' %}%}..">Return to the score list.</a></p>
 {% endblock %}

@@ -17,7 +17,7 @@ decbot.config([
     '$location',
     function($location) {
         // If there was a redirect to the single-page app, it gave
-        // us the actual requested URL. Set out path to that.
+        // us the actual requested URL. Set our path to that.
         var search = $location.search();
         if ('redirect_src' in search) {
             var target = decodeURIComponent(search['redirect_src']);
@@ -150,15 +150,104 @@ decbot.factory('Scores', [
     }
 ]);
 
+decbot.factory('ScoreLogs', [
+    '$resource',
+    function($resource) {
+        return $resource('/api/scores-log/:name');
+    }
+]);
+
 decbot.controller('ScoreDetailCtrl', [
     '$scope',
     '$routeParams',
     'Scores',
+    'ScoreLogs',
 
-    function($scope, $routeParams, Scores) {
+    function($scope, $routeParams, Scores, ScoreLogs) {
         var name = $routeParams.name;
 
-        $scope.object = Scores.get({name: name});
+        var score_aggregate = 0;
+        // We need to sequence ScoreLog get after Score get so the aggregate is
+        // updated properly, so set more_loading initially, to be cleared by
+        // Score get completion, thus unblocking ScoreLog fetch.
+        $scope.more_loading = true;
+        $scope.object = Scores.get({name: name}, function(data) {
+            score_aggregate = data.score;
+            $scope.more_loading = false;
+        });
+
+        $scope.changes = [];
+        $scope.last_changed = "at an indeterminate time";
+        $scope.chartData = [];
+
+        var last_page = 1;
+        var more_pages = true;
+        $scope.more = function() {
+            if (!more_pages) return;
+            $scope.more_loading = true;
+
+            ScoreLogs.get({'name': name, 'page': last_page}, function (data) {
+                $scope.more_loading = false;
+                $scope.chartConfig.loading = false;
+                more_pages = data.next != null;
+
+                if (last_page == 1 && data.count > 0) {
+                    // First item's timestamp is the newest.
+                    $scope.last_changed = data.results[0].timestamp;
+                }
+                if (data.count == 0) {
+                    // No history exists. Inject a single data point into the
+                    // chart.
+                    $scope.chartData.push([0, 0], [Date.now(), score_aggregate]);
+                    return;
+                }
+                last_page++;
+
+                for (var i = 0; i < data.count; i++) {
+                    var entry = data.results[i];
+                    entry.aggregate = score_aggregate;
+
+                    $scope.changes.push(entry);
+                    $scope.chartData.unshift([
+                        Date.parse(entry.timestamp),
+                        score_aggregate
+                    ]);
+
+                    score_aggregate += -entry.change;
+                }
+            });
+
+        $scope.chartConfig = {
+            options: {
+                chart: {
+                    type: 'area',
+                    zoomType: 'xy'
+                },
+                credits: { enabled: false },
+                tooltip: {
+                    crosshairs: true,
+                },
+                legend: { enabled: false },
+                yAxis: {
+                    type: 'linear',
+                    title: { text: 'Score' },
+                },
+            },
+            series: [{name: 'Score', data: $scope.chartData}],
+            title: {
+                text: 'Score history for ' + name,
+            },
+            xAxis: {
+                type: 'datetime',
+                labels: {
+                    rotation: -75,
+                    overflow: false,
+                },
+                title: { text: 'Time' },
+            },
+            loading: true,
+        };
+        }
     }
 ]);
 
