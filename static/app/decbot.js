@@ -52,7 +52,7 @@ decbot.config([
                 controller: 'ScoreDetailCtrl'
             }).
             otherwise({
-                redirectTo: '/quotes/'
+                redirectTo: '/scores/'
             });
     }
 ]);

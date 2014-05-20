@@ -16,10 +16,10 @@ api = patterns('api',
 
 from quotes.urls import quotes
 from karma.urls import karma
-from quotes.views import QuoteList
+from karma.views import ScoreSummary
 
 urlpatterns = patterns('',
-    url(r'^$', QuoteList.as_view()),
+    url(r'^$', ScoreSummary.as_view()),
     url(r'^api/', include(api)),
     url(r'^quotes/', include(quotes)),
     url(r'^scores/', include(karma)),
