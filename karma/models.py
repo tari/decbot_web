@@ -21,3 +21,19 @@ class Link(models.Model):
 
     class Meta:
         db_table = 'links'
+
+    @classmethod
+    def canonical_name(cls, s):
+        return cls.objects.get(name=s).link
+
+class ScoreLog(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)
+    name = models.CharField(db_column='Name', max_length=100,
+                            null=False)
+    change = models.IntegerField(db_column='Change', null=False)
+    timestamp = models.DateTimeField(db_column='Timestamp',
+                                     null=False, auto_now_add=True)
+
+    class Meta:
+        db_table = 'scores_log'
+        ordering = ['-timestamp']
