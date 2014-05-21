@@ -64,7 +64,7 @@ def score_graph(request):
     names = [s.name for s in scores]
     scores = [s.score for s in scores]
 
-    fig = Figure(tight_layout=True, figsize=(18,6))
+    fig = Figure(figsize=(18,6))
     fig.patch.set_alpha(0)
     canvas = FigureCanvasAgg(fig)
     ax = fig.add_subplot(111)
@@ -75,6 +75,7 @@ def score_graph(request):
     ax.set_xticklabels(names, rotation=-90)
     ax.set_yscale('symlog', basey=10, subsy=[1,2,3,4,5,6,7,8,9])
     ax.set_title('Top 50 ($log_{10}$)')
+    fig.tight_layout()
 
     response = HttpResponse(content_type='image/png')
     canvas.print_png(response, transparent=True)
@@ -99,7 +100,7 @@ def score_log_graph(request, pk=None):
         time_data = [dates.date2num(datetime(1970, 1, 1)),
                      dates.date2num(datetime.now())]
 
-    fig = Figure(tight_layout=True, figsize=(18, 6))
+    fig = Figure(figsize=(18, 6))
     fig.patch.set_alpha(0)
     canvas = FigureCanvasAgg(fig)
     ax = fig.add_subplot(111)
@@ -110,6 +111,7 @@ def score_log_graph(request, pk=None):
     ax.xaxis.set_major_formatter(dates.AutoDateFormatter(locator))
     ax.legend()
     ax.set_title('Score history for ' + pk)
+    fig.tight_layout()
 
     response = HttpResponse(content_type='image/png')
     canvas.print_png(response, transparent=True)
