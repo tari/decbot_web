@@ -5,7 +5,8 @@ var decbot = angular.module('decbot', [
     'ngResource',
     'ngRoute',
     'infinite-scroll',
-    'highcharts-ng'
+    'highcharts-ng',
+    'angular-loading-bar',
 ]);
 
 decbot.config([
