@@ -182,15 +182,15 @@ decbot.controller('ScoreDetailCtrl', [
         $scope.chartData = [];
 
         var last_page = 1;
-        var more_pages = true;
+        $scope.more_pages = true;
         $scope.more = function() {
-            if (!more_pages) return;
+            if (!$scope.more_pages) return;
             $scope.more_loading = true;
 
             ScoreLogs.get({'name': name, 'page': last_page}, function (data) {
                 $scope.more_loading = false;
                 $scope.chartConfig.loading = false;
-                more_pages = data.next != null;
+                $scope.more_pages = data.next != null;
 
                 if (last_page == 1 && data.count > 0) {
                     // First item's timestamp is the newest.
