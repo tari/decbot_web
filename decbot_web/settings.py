@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     #'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'pipeline',
 
     'quotes',
     'karma'
@@ -48,6 +49,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+# Make things slow.
+#    'decbot_web.middleware.SlowPony',
 )
 
 ROOT_URLCONF = 'decbot_web.urls'
@@ -88,6 +92,35 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+STATIC_ROOT = '/home/tari/projects/decbot_web/static_root/'
+
+# I'm not sure why this is here. It's been here since I last touched the
+# code, so who knows if it does anything useful.
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.closure.ClosureCompressor'
+PIPELINE_CLOSURE_ARGUMENTS = '--language_in ECMASCRIPT5_STRICT'
+PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.csstidy.CSSTidyCompressor'
+
+PIPELINE_CSS = {
+    'ns': {
+        'source_filenames': ('css/main.css', 'css/ns.css'),
+        'output_filename': 'css/ns.css',
+    },
+    'angular': {
+        'source_filenames': ('css/main.css', 'css/angular.css'),
+        'output_filename': 'css/angular.css',
+    }
+}
+PIPELINE_JS = {
+    'libs': {
+        'source_filenames': ('lib/*.js',),
+        'output_filename': 'js/libs.js',
+    },
+    'decbot': {
+        'source_filenames': ('app/*.js',),
+        'output_filename': 'js/decbot.js',
+    }
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_MODEL_SERIALIZER_CLASS':
