@@ -9,7 +9,8 @@
     <highchart config="chartConfig"></highchart>
 </div>
 
-<p ng-show="more_pages">Scroll down to load more data.</p>
+<p ng-show="more_pages">Scroll down to load more data or
+<button ng-click="more()">Load More History</button></p>
 
 <table infinite-scroll="more()" infinite-scroll-disabled="more_loading"
        id="score-table">
