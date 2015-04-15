@@ -61,7 +61,7 @@ ul#quotes {
 #score-graph {
     width: 100%;
     background-color: white;
-    overflow: auto;
+    overflow: none;
     resize: vertical;
 }
 
