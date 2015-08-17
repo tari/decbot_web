@@ -17,14 +17,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'xgu9r*3+5yyo@-07&5-n2ue(0sd+^fzfggmz4k^d!(^33h(jaa'
+SECRET_KEY = 'xgu9r*2+5yyo@-07&m-n2ue(0s*+^fzfgGmz4k^d,(^33)(jaa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.cemetech.net']
 
 
 # Application definition
@@ -65,8 +65,10 @@ TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'merthsoft',
+        'USER': 'merthsoft',
+        'PASSWORD': 'whyxcE2vBhcAmxrX',
     }
 }
 
@@ -96,31 +98,33 @@ STATIC_ROOT = '/home/tari/projects/decbot_web/static_root/'
 
 # I'm not sure why this is here. It's been here since I last touched the
 # code, so who knows if it does anything useful.
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
-PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.closure.ClosureCompressor'
-PIPELINE_CLOSURE_ARGUMENTS = '--language_in ECMASCRIPT5_STRICT'
-PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.csstidy.CSSTidyCompressor'
+#STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+#PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.closure.ClosureCompressor'
+#PIPELINE_CLOSURE_ARGUMENTS = '--language_in ECMASCRIPT5_STRICT'
+#PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.csstidy.CSSTidyCompressor'
+#
+#PIPELINE_CSS = {
+#    'ns': {
+#        'source_filenames': ('css/main.css', 'css/ns.css'),
+#        'output_filename': 'css/ns.css',
+#    },
+#    'angular': {
+#        'source_filenames': ('css/main.css', 'css/angular.css'),
+#        'output_filename': 'css/angular.css',
+#    }
+#}
+#PIPELINE_JS = {
+#    'libs': {
+#        'source_filenames': ('lib/*.js',),
+#        'output_filename': 'js/libs.js',
+#    },
+#    'decbot': {
+#        'source_filenames': ('app/*.js',),
+#        'output_filename': 'js/decbot.js',
+#    }
+#}
 
-PIPELINE_CSS = {
-    'ns': {
-        'source_filenames': ('css/main.css', 'css/ns.css'),
-        'output_filename': 'css/ns.css',
-    },
-    'angular': {
-        'source_filenames': ('css/main.css', 'css/angular.css'),
-        'output_filename': 'css/angular.css',
-    }
-}
-PIPELINE_JS = {
-    'libs': {
-        'source_filenames': ('lib/*.js',),
-        'output_filename': 'js/libs.js',
-    },
-    'decbot': {
-        'source_filenames': ('app/*.js',),
-        'output_filename': 'js/decbot.js',
-    }
-}
+STATIC_ROOT = '/home/tari/decbot.cemetech.net/public_html/static/'
 
 REST_FRAMEWORK = {
     'DEFAULT_MODEL_SERIALIZER_CLASS':
@@ -131,4 +135,5 @@ REST_FRAMEWORK = {
     ],
 
     'PAGINATE_BY': 50,
+	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 }

@@ -55,64 +55,8 @@ class ScoreLogDetail(ListView):
             return qs
 
 
-from matplotlib.backends.backend_agg import FigureCanvasAgg
-from matplotlib.figure import Figure
-from numpy import arange
-
 def score_graph(request):
-    scores = list(Score.objects.all()[:50])
-    names = [s.name for s in scores]
-    scores = [s.score for s in scores]
-
-    fig = Figure(figsize=(18,6))
-    fig.patch.set_alpha(0)
-    canvas = FigureCanvasAgg(fig)
-    ax = fig.add_subplot(111)
-    ax.grid(True, which='both')
-    ax.plot(arange(len(scores)), scores, label='Score', color='red', lw=4)
-    ax.legend()
-    ax.set_xticks(arange(len(scores)))
-    ax.set_xticklabels(names, rotation=-90)
-    ax.set_yscale('symlog', basey=10, subsy=[1,2,3,4,5,6,7,8,9])
-    ax.set_title('Top 50 ($log_{10}$)')
-    fig.tight_layout()
-
-    response = HttpResponse(content_type='image/png')
-    canvas.print_png(response, transparent=True)
-    return response
-
-from matplotlib import dates
-from datetime import datetime
+    raise Http404("Static graphs are no longer supported")
 
 def score_log_graph(request, pk=None):
-    score = get_object_or_404(Score, name=pk).score
-    log = ScoreLog.objects.filter(name=pk)
-
-    if log.count() > 0:
-        score_data = []
-        time_data = []
-        for change in log:
-            time_data.append(dates.date2num(change.timestamp))
-            score_data.append(score)
-            score -= change.change
-    else:
-        score_data = [0, score]
-        time_data = [dates.date2num(datetime(1970, 1, 1)),
-                     dates.date2num(datetime.now())]
-
-    fig = Figure(figsize=(18, 6))
-    fig.patch.set_alpha(0)
-    canvas = FigureCanvasAgg(fig)
-    ax = fig.add_subplot(111)
-    ax.grid(True, which='both')
-    ax.plot(time_data, score_data, label='Score', color='red', lw=3, marker='o')
-    locator = dates.AutoDateLocator()
-    ax.xaxis.set_major_locator(locator)
-    ax.xaxis.set_major_formatter(dates.AutoDateFormatter(locator))
-    ax.legend()
-    ax.set_title('Score history for ' + pk)
-    fig.tight_layout()
-
-    response = HttpResponse(content_type='image/png')
-    canvas.print_png(response, transparent=True)
-    return response
+    raise Http404("Static graphs are no longer supported")
