@@ -10,8 +10,8 @@ class Score(models.Model):
         db_table = 'scores'
         ordering = ['-score']
 
-    def __unicode__(self):
-        return u'{}: {}'.format(self.name, self.score)
+    def __str__(self):
+        return '{}: {}'.format(self.name, self.score)
 
 class Link(models.Model):
     name = models.CharField(db_column='Name', max_length=100,
