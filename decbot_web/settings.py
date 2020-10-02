@@ -36,7 +36,6 @@ INSTALLED_APPS = (
     #'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'pipeline',
 
     'quotes',
     'karma'
@@ -135,5 +134,5 @@ REST_FRAMEWORK = {
     ],
 
     'PAGINATE_BY': 50,
-	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 }

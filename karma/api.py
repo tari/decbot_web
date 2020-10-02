@@ -2,7 +2,6 @@ from rest_framework import viewsets, serializers, pagination
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404
 
 from django.db.models import Sum
@@ -24,10 +23,6 @@ class ScoreLogSerializer(serializers.ModelSerializer):
         model = ScoreLog
         exclude = ('id',)
 
-class PaginatedScoreLogSerializer(pagination.PaginationSerializer):
-    class Meta:
-        object_serializer_class = ScoreLogSerializer
-
 class ScoreLogViewSet(viewsets.ReadOnlyModelViewSet):
     """
     History of karma modifications for named users.
@@ -38,18 +33,11 @@ class ScoreLogViewSet(viewsets.ReadOnlyModelViewSet):
 
     def retrieve(self, request, name=None):
         queryset = self.queryset.filter(name=name)
+        paginator = PageNumberPagination()
 
-        paginator = Paginator(queryset, 50)
-        page = request.QUERY_PARAMS.get('page')
-        try:
-            log = paginator.page(page)
-        except PageNotAnInteger:
-            log = paginator.page(1)
-        except EmptyPage:
-            raise Http404
-
-        serializer = PaginatedScoreLogSerializer(log, context={'request': request})
-        return Response(serializer.data)
+        results_page = paginator.paginate_queryset(queryset, request)
+        serializer = ScoreLogSerializer(results_page)
+        return paginator.get_paginated_response(serializer.data)
 
 # Kind of silly to use a ViewSet for these, but it allows the root router
 # to know about these endpoints.
