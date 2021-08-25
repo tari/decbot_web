@@ -2,31 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 
 from django.urls import reverse
-
-try:
-    # py3k
-    from datetime import datetime, timezone
-
-    now = lambda: datetime.now(timezone.utc)
-except ImportError:
-    from datetime import datetime, timedelta, tzinfo
-
-
-    class UTC(tzinfo):
-        """UTC"""
-
-        def utcoffset(self, dt):
-            return timedelta(0)
-
-        def tzname(self, dt):
-            return "UTC"
-
-        def dst(self, dt):
-            return timedelta(0)
-
-
-    utc = UTC()
-    now = lambda: datetime.now(utc)
+from django.utils.timezone import now
 
 
 class Quote(models.Model):
