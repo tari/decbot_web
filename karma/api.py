@@ -40,7 +40,6 @@ class ScoreLogViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = ScoreLog.objects.all()
     lookup_field = 'name'
-    page_size = 50
     serializer_class = ScoreLogSerializer
 
     def retrieve(self, request, *args, **kwargs):
