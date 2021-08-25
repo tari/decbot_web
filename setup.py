@@ -11,10 +11,7 @@ setup(
     scripts=['manage.py'],
 
     install_requires=[
-        'django==3.2',
+        'django>=3.2',
         'djangorestframework>=3.12',
-        'django-filter',
-        'django-pipeline',
-        'matplotlib'
     ]
 )

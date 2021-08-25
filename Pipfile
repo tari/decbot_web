@@ -4,10 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [packages]
-django = "*"
-djangorestframework = "*"
-django-filter = "*"
-matplotlib = "*"
+decbot-web = {editable = true, path = "."}
+
+django = ">=3.2"
+djangorestframework = ">=3.12"
 mysqlclient = "*"
 
 [requires]
