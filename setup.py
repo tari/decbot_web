@@ -15,6 +15,6 @@ setup(
         'djangorestframework >=3.0',
         'django-filter <2.0',
         'django-pipeline',
-        'matplotlib'
+        'matplotlib',
     ]
 )

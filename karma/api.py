@@ -49,15 +49,16 @@ class TotalsViewSet(viewsets.ViewSet):
 
     def list(self, request):
         return Response({
-            # Ick. Oh well.
-            'score': reverse('totals-detail', args=['score'], request=request)
+            # There's only one instance, so return it directly by manually
+            # reversing the retrieve() url for it.
+            'score': reverse('api:totals-detail', args=['score'], request=request)
         })
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, pk=None, format=None):
         if pk == 'score':
             data = {
                 'names': Score.objects.count(),
-                'total': Score.objects.aggregate(Sum('score'))['score__sum']
+                'total': Score.objects.aggregate(Sum('score'))['score__sum'] or 0
             }
         else:
             raise Http404

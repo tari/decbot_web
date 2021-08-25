@@ -96,7 +96,7 @@ decbot.directive('navMenu', [
 decbot.factory('Quotes', [
     '$resource',
     function($resource) {
-        var Quotes = $resource('/api/quotes/:id')
+        var Quotes = $resource('/api/quotes/:id.json')
         return Quotes;
     }
 ]);
@@ -147,14 +147,14 @@ decbot.controller('QuoteDetailCtrl', [
 decbot.factory('Scores', [
     '$resource',
     function($resource) {
-        return $resource('/api/scores/:name');
+        return $resource('/api/scores/:name.json');
     }
 ]);
 
 decbot.factory('ScoreLogs', [
     '$resource',
     function($resource) {
-        return $resource('/api/scores-log/:name');
+        return $resource('/api/scores-log/:name.json');
     }
 ]);
 
@@ -260,7 +260,7 @@ decbot.controller('ScoreSummaryCtrl', [
         $scope.aggregate_score = "unknown";
         $scope.aggregate_names = "unknown";
 
-        $http.get('/api/totals/score').success(function (data) {
+        $http.get('/api/totals/score.json').success(function (data) {
             $scope.aggregate_score = data['total'];
             $scope.aggregate_names = data['names'];
         });
