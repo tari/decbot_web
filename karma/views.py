@@ -1,7 +1,7 @@
 from django.views.generic import ListView, DetailView
-from django.http import HttpResponse, Http404
-from django.shortcuts import get_object_or_404
+from django.http import Http404
 from karma.models import Score, ScoreLog
+
 
 class ScoreSummary(ListView):
     model = Score
@@ -22,6 +22,7 @@ class ScoreSummary(ListView):
         context['total_score'] = total
         return context
 
+
 class ScoreDetail(DetailView):
     model = Score
 
@@ -38,13 +39,14 @@ class ScoreDetail(DetailView):
         context['last_updated'] = last_updated
         return context
 
+
 class ScoreLogSummary(ListView):
     model = ScoreLog
     context_object_name = 'changes'
 
+
 class ScoreLogDetail(ListView):
     model = ScoreLog
-    template_name_suffix = '_single_list'
     context_object_name = 'changes'
 
     def get_queryset(self, *args, **kwargs):
@@ -57,6 +59,7 @@ class ScoreLogDetail(ListView):
 
 def score_graph(request):
     raise Http404("Static graphs are no longer supported")
+
 
 def score_log_graph(request, pk=None):
     raise Http404("Static graphs are no longer supported")

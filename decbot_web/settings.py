@@ -10,8 +10,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -22,10 +22,9 @@ SECRET_KEY = 'xgu9r*2+5yyo@-07&m-n2ue(0s*+^fzfgGmz4k^d,(^33)(jaa'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-TEMPLATE_DEBUG = False
+# TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['.cemetech.net']
-
 
 # Application definition
 
@@ -33,10 +32,11 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    #'django.contrib.messages',
+    # 'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'pipeline',
+    # disabled as we don't need any pipelines currently
+    # 'pipeline',
 
     'quotes',
     'karma'
@@ -50,15 +50,21 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-# Make things slow.
-#    'decbot_web.middleware.SlowPony',
+    # Make things slow.
+    #    'decbot_web.middleware.SlowPony',
 )
 
 ROOT_URLCONF = 'decbot_web.urls'
 
 WSGI_APPLICATION = 'decbot_web.wsgi.application'
 
-TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+    },
+]
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -85,7 +91,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
@@ -94,16 +99,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
-STATIC_ROOT = '/home/tari/projects/decbot_web/static_root/'
 
 # I'm not sure why this is here. It's been here since I last touched the
 # code, so who knows if it does anything useful.
-#STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
-#PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.closure.ClosureCompressor'
-#PIPELINE_CLOSURE_ARGUMENTS = '--language_in ECMASCRIPT5_STRICT'
-#PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.csstidy.CSSTidyCompressor'
+# STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+# PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.closure.ClosureCompressor'
+# PIPELINE_CLOSURE_ARGUMENTS = '--language_in ECMASCRIPT5_STRICT'
+# PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.csstidy.CSSTidyCompressor'
 #
-#PIPELINE_CSS = {
+# PIPELINE_CSS = {
 #    'ns': {
 #        'source_filenames': ('css/main.css', 'css/ns.css'),
 #        'output_filename': 'css/ns.css',
@@ -112,8 +116,8 @@ STATIC_ROOT = '/home/tari/projects/decbot_web/static_root/'
 #        'source_filenames': ('css/main.css', 'css/angular.css'),
 #        'output_filename': 'css/angular.css',
 #    }
-#}
-#PIPELINE_JS = {
+# }
+# PIPELINE_JS = {
 #    'libs': {
 #        'source_filenames': ('lib/*.js',),
 #        'output_filename': 'js/libs.js',
@@ -122,7 +126,7 @@ STATIC_ROOT = '/home/tari/projects/decbot_web/static_root/'
 #        'source_filenames': ('app/*.js',),
 #        'output_filename': 'js/decbot.js',
 #    }
-#}
+# }
 
 STATIC_ROOT = '/home/tari/decbot.cemetech.net/public_html/static/'
 
@@ -135,5 +139,5 @@ REST_FRAMEWORK = {
     ],
 
     'PAGINATE_BY': 50,
-	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 }

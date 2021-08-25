@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Score(models.Model):
     # When creating a Score, must provide force_insert=True
     name = models.CharField(db_column='Name', max_length=100,
@@ -13,6 +14,7 @@ class Score(models.Model):
     def __unicode__(self):
         return u'{}: {}'.format(self.name, self.score)
 
+
 class Link(models.Model):
     name = models.CharField(db_column='Name', max_length=100,
                             null=False, primary_key=True)
@@ -25,6 +27,7 @@ class Link(models.Model):
     @classmethod
     def canonical_name(cls, s):
         return cls.objects.get(name=s).link
+
 
 class ScoreLog(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)

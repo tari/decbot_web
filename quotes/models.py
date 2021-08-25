@@ -1,31 +1,40 @@
 from __future__ import unicode_literals
-from django.core.urlresolvers import reverse
 from django.db import models
-from datetime import datetime
+
+from django.urls import reverse
 
 try:
     # py3k
     from datetime import datetime, timezone
+
     now = lambda: datetime.now(timezone.utc)
 except ImportError:
     from datetime import datetime, timedelta, tzinfo
+
+
     class UTC(tzinfo):
         """UTC"""
+
         def utcoffset(self, dt):
             return timedelta(0)
+
         def tzname(self, dt):
             return "UTC"
+
         def dst(self, dt):
             return timedelta(0)
+
+
     utc = UTC()
     now = lambda: datetime.now(utc)
+
 
 class Quote(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)
     timestamp = models.DateTimeField(db_column='Timestamp', default=now)
     added_by = models.CharField(db_column='AddedBy', max_length=45)
     deleted_by = models.CharField(db_column='DeletedBy', max_length=45,
-            null=True)
+                                  null=True)
     quote = models.TextField(db_column='Quote')
     active = models.BooleanField(db_column='Active', default=True)
     score_up = models.IntegerField(db_column='ScoreUp', default=0)
@@ -36,7 +45,7 @@ class Quote(models.Model):
         ordering = ['-timestamp']
 
     def get_absolute_url(self):
-        return reverse('quote_view', kwargs={'pk': self.id})
+        return reverse('quotes:quote_view', kwargs={'pk': self.id})
 
     @property
     def lines(self):
@@ -61,7 +70,7 @@ class Quote(models.Model):
     def all_active(cls):
         return cls.objects.filter(active=True)
 
-#class Vote(models.Model):
+# class Vote(models.Model):
 #    id = models.IntegerField(primary_key=True)
 #    # TODO prefer composite primary key of quote ID and SID
 #    #session = 
@@ -70,4 +79,3 @@ class Quote(models.Model):
 #    class Meta:
 #        db_table = 'quotes_votes'
 #        unique_together = ('sid', 'quote')
-

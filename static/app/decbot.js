@@ -9,6 +9,18 @@ var decbot = angular.module('decbot', [
     'angular-loading-bar',
 ]);
 
+decbot.filter('join', function () {
+    return function join(array, separator, prop) {
+        if (!Array.isArray(array)) {
+            return array; // if not array return original - can also throw error
+        }
+
+        return (!angular.isUndefined(prop) ? array.map(function (item) {
+            return item[prop];
+        }) : array).join(separator);
+    };
+});
+
 decbot.config([
     '$locationProvider',
     function($lp) {
@@ -16,9 +28,11 @@ decbot.config([
     }
 ]).run([
     '$location',
-    function($location) {
+    '$templateCache',
+    function($location, $templateCache) {
         // If there was a redirect to the single-page app, it gave
         // us the actual requested URL. Set our path to that.
+        $templateCache.removeAll();
         var search = $location.search();
         if ('redirect_src' in search) {
             var target = decodeURIComponent(search['redirect_src']);

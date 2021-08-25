@@ -2,9 +2,8 @@ from quotes.models import Quote
 from quotes.serializers import QuoteSerializer
 
 from rest_framework import viewsets
-from rest_framework.decorators import action, link
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+
 
 class QuoteViewSet(viewsets.ModelViewSet):
     """
@@ -12,6 +11,12 @@ class QuoteViewSet(viewsets.ModelViewSet):
     """
     queryset = Quote.all_active()
     serializer_class = QuoteSerializer
+
+    def list(self, request, *args, **kwargs):
+        response = super(QuoteViewSet, self).list(request, *args, **kwargs)
+        response.data = {"results": response.data}
+
+        return response
 
     def vote(f):
         def vote_internal(self, request, pk=None):
@@ -24,6 +29,7 @@ class QuoteViewSet(viewsets.ModelViewSet):
                 'status': 'OK',
                 'score': score
             })
+
         return vote_internal
 
 #    @action(permission_classes=(AllowAny,))
@@ -35,4 +41,3 @@ class QuoteViewSet(viewsets.ModelViewSet):
 #    @vote
 #    def downvote(self, request, pk=None):
 #        quote.score_down += 1
-

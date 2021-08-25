@@ -1,16 +1,18 @@
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from rest_framework import viewsets, serializers, pagination
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404
 
 from django.db.models import Sum
 from .models import Score, ScoreLog
 
+
 class ScoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Score
+        fields = ['name', 'score']
+
 
 class ScoreViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -19,14 +21,18 @@ class ScoreViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer
 
+    def list(self, request, *args, **kwargs):
+        response = super(ScoreViewSet, self).list(request, *args, **kwargs)
+        response.data = {"results": response.data}
+
+        return response
+
+
 class ScoreLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScoreLog
         exclude = ('id',)
 
-class PaginatedScoreLogSerializer(pagination.PaginationSerializer):
-    class Meta:
-        object_serializer_class = ScoreLogSerializer
 
 class ScoreLogViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -34,13 +40,14 @@ class ScoreLogViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = ScoreLog.objects.all()
     lookup_field = 'name'
+    page_size = 50
     serializer_class = ScoreLogSerializer
 
-    def retrieve(self, request, name=None):
-        queryset = self.queryset.filter(name=name)
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(name=kwargs.get('name'))
 
         paginator = Paginator(queryset, 50)
-        page = request.QUERY_PARAMS.get('page')
+        page = request.query_params.get('page')
         try:
             log = paginator.page(page)
         except PageNotAnInteger:
@@ -48,8 +55,18 @@ class ScoreLogViewSet(viewsets.ReadOnlyModelViewSet):
         except EmptyPage:
             raise Http404
 
-        serializer = PaginatedScoreLogSerializer(log, context={'request': request})
-        return Response(serializer.data)
+        return Response({
+            'count': len(log.object_list),
+            'next': reverse(
+                'scores-log:score-log-detail', args=[log.next_page_number()]
+            ) if log.has_next() else None,
+            'previous': reverse(
+                'scores-log:score-log-detail', args=[log.previous_page_number()]
+            ) if log.has_previous() else None,
+            'results': [ScoreLogSerializer(score_log).data for score_log in
+                        log.object_list]
+        })
+
 
 # Kind of silly to use a ViewSet for these, but it allows the root router
 # to know about these endpoints.

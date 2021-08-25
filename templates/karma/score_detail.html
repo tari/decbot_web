@@ -13,7 +13,7 @@
     {% endif %}
 </p>
 
-<img src="{% url 'karma.views.score_log_graph' pk=object.name %}" alt="Score history"
+<img src="{% url 'scores-log:score_log_graph' pk=object.name %}" alt="Score history"
      id="score-graph"/>
 
 <table id="score-table">
@@ -29,5 +29,5 @@
     {% endfor %}
 </table>
 
-<p><a href="{% url 'score-summary' %}%}..">Return to the score list.</a></p>
+<p><a href="{% url 'scores-log:score-log-summary' %}%}..">Return to the score list.</a></p>
 {% endblock %}
