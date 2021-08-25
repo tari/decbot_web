@@ -11,7 +11,7 @@ class Score(models.Model):
         db_table = 'scores'
         ordering = ['-score']
 
-    def __unicode__(self):
+    def __str__(self):
         return u'{}: {}'.format(self.name, self.score)
 
 
@@ -41,5 +41,5 @@ class ScoreLog(models.Model):
         db_table = 'scores_log'
         ordering = ['-timestamp']
 
-    def __unicode__(self):
+    def __str__(self):
         return "<{}+{} @{}>".format(self.name, self.change, self.timestamp)
