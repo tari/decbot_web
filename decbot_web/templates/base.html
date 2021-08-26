@@ -12,7 +12,7 @@
     // TODO check a cookie to allow users to force the script-free site when
     // scripts are enabled.
     var target = encodeURIComponent(window.location.pathname);
-    window.location.replace('/static/index.html?redirect_src=' + target);
+    window.location.replace('{% url "spa" %}?redirect_src=' + target);
     </script>
 
     <title>DecBot {% block title %}{% endblock %}</title>

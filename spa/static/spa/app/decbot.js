@@ -51,19 +51,19 @@ decbot.config([
     function($routeProvider) {
         $routeProvider.
             when('/quotes/', {
-                templateUrl: '/static/partials/quote-list.html',
+                templateUrl: decbot_spa_partial('quote-list.html'),
                 controller: 'QuoteListCtrl'
             }).
             when('/quotes/:quoteId', {
-                templateUrl: '/static/partials/quote-single.html',
+                templateUrl: decbot_spa_partial('quote-single.html'),
                 controller: 'QuoteDetailCtrl'
             }).
             when('/scores/', {
-                templateUrl: '/static/partials/score-summary.html',
+                templateUrl: decbot_spa_partial('score-summary.html'),
                 controller: 'ScoreSummaryCtrl'
             }).
             when('/scores/:name', {
-                templateUrl: '/static/partials/score-single.html',
+                templateUrl: decbot_spa_partial('score-single.html'),
                 controller: 'ScoreDetailCtrl'
             }).
             otherwise({

@@ -34,8 +34,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
 
+    'decbot_web',
+    'karma',
     'quotes',
-    'karma'
+    'spa',
 )
 
 MIDDLEWARE_CLASSES = (

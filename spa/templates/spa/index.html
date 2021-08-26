@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" ng-app="decbot">
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript">
+        function decbot_spa_partial(name) {
+            return "{% static "spa/partials/" %}" + name;
+        }
+    </script>
+    <script type="text/javascript" src="{% static "spa/lib/jquery-2.1.0.js" %}"></script>
+    <script type="text/javascript" src="{% static "spa/lib/angular.js" %}"></script>
+    <script type="text/javascript" src="{% static "spa/lib/angular-resource.js" %}"></script>
+    <script type="text/javascript" src="{% static "spa/lib/angular-route.js" %}"></script>
+    <script type="text/javascript" src="{% static "spa/lib/ng-infinite-scroll.js" %}"></script>
+    <script type="text/javascript" src="{% static "spa/lib/loading-bar.js" %}"></script>
+    <link rel="stylesheet" href="{% static "spa/lib/loading-bar.css" %}">
+    <script type="text/javascript" src="{% static "spa/lib/highcharts.js" %}"></script>
+    <script type="text/javascript" src="{% static "spa/lib/highcharts-ng.js" %}"></script>
+    <script type="text/javascript" src="{% static "spa/app/decbot.js" %}"></script>
+
+    <link rel="stylesheet" href="{% static "spa/css/main.css" %}">
+    <link rel="stylesheet" href="{% static "spa/css/angular.css" %}">
+
+    <title>DecBot</title>
+</head>
+
+<body>
+
+<div id="header">
+    <h1>DecBot</h1>
+    <ul id="nav" class="flatten" nav-menu>
+        <li><a href="/quotes/">Quotes</a></li>
+        <li><a href="/scores/">Karma</a></li>
+    </ul>
+</div>
+
+<div ng-view></div>
+
+</body>
+</html>
