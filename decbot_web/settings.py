@@ -1,11 +1,16 @@
 """
 Django settings for decbot_web project.
 
+These settings should be overridden for production deployment, particularly
+the SECRET_KEY should be changed and DEBUG turned off. It is also strongly
+recommended that STATICFILES_STORAGE be set to use
+ManifestStaticFilesStorage, or perhaps use whitenoise for static files.
+
 For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
+https://docs.djangoproject.com/en/3.2/topics/settings/
 
 For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
+https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -20,10 +25,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'xgu9r*2+5yyo@-07&m-n2ue(0s*+^fzfgGmz4k^d,(^33)(jaa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-TEMPLATE_DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['.cemetech.net']
+# Default is localhost
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -52,7 +57,6 @@ WSGI_APPLICATION = 'decbot_web.wsgi.application'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
     },
 ]
@@ -62,10 +66,8 @@ TEMPLATES = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'merthsoft',
-        'USER': 'merthsoft',
-        'PASSWORD': 'whyxcE2vBhcAmxrX',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
     }
 }
 
@@ -87,11 +89,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
-
-STATIC_ROOT = '/home/tari/decbot.cemetech.net/public_html/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 REST_FRAMEWORK = {
     'DEFAULT_MODEL_SERIALIZER_CLASS':
