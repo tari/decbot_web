@@ -13,7 +13,7 @@ class QuoteViewSet(viewsets.ModelViewSet):
     serializer_class = QuoteSerializer
 
     def list(self, request, *args, **kwargs):
-        response = super(QuoteViewSet, self).list(request, *args, **kwargs)
+        response = super().list(request, *args, **kwargs)
         response.data = {"results": response.data}
 
         return response
