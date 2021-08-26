@@ -28,11 +28,9 @@ decbot.config([
     }
 ]).run([
     '$location',
-    '$templateCache',
-    function($location, $templateCache) {
+    function($location) {
         // If there was a redirect to the single-page app, it gave
         // us the actual requested URL. Set our path to that.
-        $templateCache.removeAll();
         var search = $location.search();
         if ('redirect_src' in search) {
             var target = decodeURIComponent(search['redirect_src']);

@@ -22,7 +22,7 @@ class ScoreViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ScoreSerializer
 
     def list(self, request, *args, **kwargs):
-        response = super(ScoreViewSet, self).list(request, *args, **kwargs)
+        response = super().list(request, *args, **kwargs)
         response.data = {"results": response.data}
 
         return response
