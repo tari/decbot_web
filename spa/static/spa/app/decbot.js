@@ -121,6 +121,7 @@ decbot.controller('QuoteListCtrl', [
     function($scope, Quotes) {
         $scope.quotes = [];
         $scope.more_loading = false;
+        $scope.decbot_spa_partial = decbot_spa_partial;
 
         var last_page = 1;
         var more_pages = true;
