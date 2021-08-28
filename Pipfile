@@ -8,6 +8,8 @@ decbot-web = {editable = true, path = "."}
 
 django = ">=3.2"
 djangorestframework = ">=3.12"
+
+[dev-packages]
 mysqlclient = "*"
 
 [requires]
