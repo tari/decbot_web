@@ -3,7 +3,7 @@
 {% block title %}Scores{% endblock %}
 
 {% block content %}
-<img src="{% url 'karma.views.score_graph' %}" alt="Scores log10"
+<img src="{% url 'scores:score_graph' %}" alt="Scores log10"
      id="score-graph"/>
 <p>
     There are {{things|length}} names in the database, totalling {{total_score}}
@@ -18,7 +18,7 @@
     {% for thing in things %}
     <tr>
         <td>{{thing.rank}}</td>
-        <td><a href="{% url 'score-detail' pk=thing.name %}">{{thing.name}}</a></td>
+        <td><a href="{% url 'scores:score-detail' pk=thing.name %}">{{thing.name}}</a></td>
         <td>{{thing.score}}</td>
     </tr>
     {% endfor %}

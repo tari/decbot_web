@@ -1,6 +1,6 @@
 "use strict";
 
-var decbot = angular.module('decbot', [
+let decbot = angular.module('decbot', [
     // Module dependencies
     'ngResource',
     'ngRoute',
@@ -8,6 +8,18 @@ var decbot = angular.module('decbot', [
     'highcharts-ng',
     'angular-loading-bar',
 ]);
+
+decbot.filter('join', function () {
+    return function join(array, separator, prop) {
+        if (!Array.isArray(array)) {
+            return array; // if not array return original - can also throw error
+        }
+
+        return (!angular.isUndefined(prop) ? array.map(function (item) {
+            return item[prop];
+        }) : array).join(separator);
+    };
+});
 
 decbot.config([
     '$locationProvider',
@@ -19,9 +31,9 @@ decbot.config([
     function($location) {
         // If there was a redirect to the single-page app, it gave
         // us the actual requested URL. Set our path to that.
-        var search = $location.search();
+        let search = $location.search();
         if ('redirect_src' in search) {
-            var target = decodeURIComponent(search['redirect_src']);
+            let target = decodeURIComponent(search['redirect_src']);
             $location.path(target);
 
             delete search['redirect_src'];
@@ -37,19 +49,19 @@ decbot.config([
     function($routeProvider) {
         $routeProvider.
             when('/quotes/', {
-                templateUrl: '/static/partials/quote-list.html',
+                templateUrl: decbot_spa_partial('quote-list.html'),
                 controller: 'QuoteListCtrl'
             }).
             when('/quotes/:quoteId', {
-                templateUrl: '/static/partials/quote-single.html',
+                templateUrl: decbot_spa_partial('quote-single.html'),
                 controller: 'QuoteDetailCtrl'
             }).
             when('/scores/', {
-                templateUrl: '/static/partials/score-summary.html',
+                templateUrl: decbot_spa_partial('score-summary.html'),
                 controller: 'ScoreSummaryCtrl'
             }).
             when('/scores/:name', {
-                templateUrl: '/static/partials/score-single.html',
+                templateUrl: decbot_spa_partial('score-single.html'),
                 controller: 'ScoreDetailCtrl'
             }).
             otherwise({
@@ -65,18 +77,18 @@ decbot.directive('navMenu', [
     '$log',
     function($location, $log) {
         return function(scope, element, attrs) {
-            var links = element.find('a');
-            var urlMap = {};
-            var currentLocation;
-            var activeClass = attrs.navMenu || 'nav-active';
+            let links = element.find('a');
+            let urlMap = {};
+            let currentLocation;
+            let activeClass = attrs.navMenu || 'nav-active';
 
-            for (var i = 0; i < links.length; i++) {
-                var link = angular.element(links[i]);
+            for (let i = 0; i < links.length; i++) {
+                let link = angular.element(links[i]);
                 urlMap[link.attr('href')] = link;
             }
 
             scope.$on('$routeChangeSuccess', function() {
-                var target = urlMap[$location.path()];
+                let target = urlMap[$location.path()];
 
                 if (target) {
                     if (currentLocation) {
@@ -96,8 +108,7 @@ decbot.directive('navMenu', [
 decbot.factory('Quotes', [
     '$resource',
     function($resource) {
-        var Quotes = $resource('/api/quotes/:id')
-        return Quotes;
+        return $resource('/api/quotes/:id');
     }
 ]);
 
@@ -109,20 +120,21 @@ decbot.controller('QuoteListCtrl', [
     function($scope, Quotes) {
         $scope.quotes = [];
         $scope.more_loading = false;
+        $scope.decbot_spa_partial = decbot_spa_partial;
 
-        var last_page = 1;
-        var more_pages = true;
+        let last_page = 1;
+        let more_pages = true;
 
         $scope.moreQuotes = function() {
             if (!more_pages) return;
             $scope.more_loading = true;
 
-            var request = Quotes.get({'page': last_page}, function() {
+            let request = Quotes.get({'page': last_page}, function() {
                 last_page++;
                 $scope.more_loading = false;
 
-                var results = request['results'];
-                for (var i = 0; i < results.length; i++) {
+                let results = request['results'];
+                for (let i = 0; i < results.length; i++) {
                     $scope.quotes.push(results[i]);
                 }
 
@@ -138,7 +150,7 @@ decbot.controller('QuoteDetailCtrl', [
     'Quotes',
 
     function($scope, $routeParams, Quotes) {
-        var qid = $routeParams.quoteId;
+        let qid = $routeParams.quoteId;
 
         $scope.quote = Quotes.get({id: qid});
     }
@@ -165,9 +177,9 @@ decbot.controller('ScoreDetailCtrl', [
     'ScoreLogs',
 
     function($scope, $routeParams, Scores, ScoreLogs) {
-        var name = $routeParams.name;
+        let name = $routeParams.name;
 
-        var score_aggregate = 0;
+        let score_aggregate = 0;
         // We need to sequence ScoreLog get after Score get so the aggregate is
         // updated properly, so set more_loading initially, to be cleared by
         // Score get completion, thus unblocking ScoreLog fetch.
@@ -181,7 +193,7 @@ decbot.controller('ScoreDetailCtrl', [
         $scope.last_changed = "at an indeterminate time";
         $scope.chartData = [];
 
-        var last_page = 1;
+        let last_page = 1;
         $scope.more_pages = true;
         $scope.more = function() {
             if (!$scope.more_pages) return;
@@ -192,11 +204,11 @@ decbot.controller('ScoreDetailCtrl', [
                 $scope.chartConfig.loading = false;
                 $scope.more_pages = data.next != null;
 
-                if (last_page == 1 && data.count > 0) {
+                if (last_page === 1 && data.count > 0) {
                     // First item's timestamp is the newest.
                     $scope.last_changed = data.results[0].timestamp;
                 }
-                if (data.count == 0) {
+                if (data.count === 0) {
                     // No history exists. Inject a single data point into the
                     // chart.
                     $scope.chartData.push([0, 0], [Date.now(), score_aggregate]);
@@ -204,8 +216,8 @@ decbot.controller('ScoreDetailCtrl', [
                 }
                 last_page++;
 
-                for (var i = 0; i < data.count; i++) {
-                    var entry = data.results[i];
+                for (let i = 0; i < data.count; i++) {
+                    let entry = data.results[i];
                     entry.aggregate = score_aggregate;
 
                     $scope.changes.push(entry);
@@ -270,24 +282,24 @@ decbot.controller('ScoreSummaryCtrl', [
         $scope.uNames = [];
         $scope.more_loading = false;
 
-        var last_page = 1;
-        var more_pages = true;
+        let last_page = 1;
+        let more_pages = true;
         // Items with equal score should have same rank
-        var last_score = Infinity;
-        var rank = 0;
+        let last_score = Infinity;
+        let rank = 0;
 
         $scope.moreScores = function() {
             if (!more_pages) return;
             $scope.more_loading = true;
             $scope.chartConfig.loading = false;
 
-            var request = Scores.get({'page': last_page}, function() {
+            let request = Scores.get({'page': last_page}, function() {
                 $scope.more_loading = false;
                 last_page++;
 
-                var results = request['results'];
-                for (var i = 0; i < results.length; i++) {
-                    var result = results[i];
+                let results = request['results'];
+                for (let i = 0; i < results.length; i++) {
+                    let result = results[i];
                     if (result.score < last_score) {
                         rank += 1;
                     }
@@ -295,7 +307,7 @@ decbot.controller('ScoreSummaryCtrl', [
                     result.rank = rank;
                     $scope.scores.push(result);
 
-                    var s = result.score;
+                    let s = result.score;
                     // Emulate matplotlib's `symlog` scale by making the scale
                     // linear for all scores less than 1. 0 => 1e-1, 1 => 1e-2
                     // and so forth.
@@ -319,7 +331,7 @@ decbot.controller('ScoreSummaryCtrl', [
                 credits: { enabled: false },
                 tooltip: {
                     formatter: function() {
-                        var s = this.y;
+                        let s = this.y;
                         if (s < 1) {
                             s = Math.round(Math.log(s) / Math.LN10) + 1;
                         }

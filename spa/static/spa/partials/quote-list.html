@@ -1,7 +1,7 @@
 <ul class="nomarker" id="quotes" infinite-scroll="moreQuotes()" infinite-scroll-disabled="more_loading"> 
     <li class="quote" ng-class-even="'even'"
         ng-repeat="quote in quotes"
-        ng-include="'/static/partials/quote-single.html'">
+        ng-include="decbot_spa_partial('quote-single.html')">
     </li>
 </ul>
 <div class="throbber" ng-show="more_loading">

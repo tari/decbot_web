@@ -1,0 +1,14 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[packages]
+decbot-web = {editable = true, path = "."}
+
+django = ">=3.2"
+djangorestframework = ">=3.12"
+mysqlclient = "*"
+
+[requires]
+python_version = "3"
