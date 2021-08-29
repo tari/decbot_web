@@ -1,27 +1,17 @@
-# Dependencies
-All dependencies except Python itself may be installed from pypi.
+## Dependencies
 
- * Python >= 2.7 (>= 3.0 is OK)
- * django >= 1.6
- * djangorestframework
+The `Pipfile` in this repository describes the runtime dependencies. For
+development, most users will want to use `pipenv`.
 
-`virtualenv` is recommended for installation of dependencies, but not necessary.
+## Deployment
 
-# Configuration
-Be sure to edit `decbot_web/settings.py` with your database configuration as
-necessary, and change the secret key.
+The provided `Dockerfile` can build a self-contained container to run the
+server, only needing an external database server. Refer to
+`decbot_web/settings_container.py` to see how it can be configured with
+environment variables. Command-line options are passed directly to `gunicorn`,
+so for instance to run the server listening on all network interfaces, port
+8000:
 
-Database setup scripts are provided in the `sql` directory. Execute them on
-your database in numerical order and everything *should* be okay. You may need
-to modify the scripts slightly depending on what database engine you use.
-
-# Upgrading
-
-If there's a new database schema revision, the requisite update script will be
-provided in the `sql` directory. Run the new SQL script(s) on your database
-and everything should be taken care of. Backups are recommended before
-attempting any upgrade, though.
-
-# Deployment
-Refer to the [Django documentation](https://docs.djangoproject.com/en/1.6/howto/deployment/)
-for deployment methods. Sample configurations are included in the `config` directory.
+```
+docker run registry.gitlab.com/cemetech/decbot_web:stable -b 0.0.0.0:8000
+```
